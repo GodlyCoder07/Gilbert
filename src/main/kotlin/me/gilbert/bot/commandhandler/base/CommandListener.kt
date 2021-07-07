@@ -20,15 +20,15 @@ class CommandListener: ListenerAdapter() {
         val prefix: String = getServerData(event.guild.id)?.getCommandInformationRepository()?.getCommandInformationModel()?.prefix ?: return
 
         if (event.message.contentRaw.startsWith(prefix)) {
+            val embedBuilder = EmbedBuilder()
+            embedBuilder.setColor(Color.RED)
+            embedBuilder.setAuthor("Commands")
+            embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())
             val args: List<String> = event.message.contentRaw.split(" ")
             val command: Command? = getCommandRepository().getCommand(args[0].replace(prefix, ""))
             if (command == null) {
-                val embedBuilder = EmbedBuilder()
-                embedBuilder.setColor(Color.RED)
-                embedBuilder.setAuthor("Commands")
                 embedBuilder.setTitle("❌ Unknown Command")
-                embedBuilder.addField("Command doesn't exists", "The command that you've entered doesn't exist", false)
-                embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())
+                embedBuilder.addField("`${args[0]}` doesn't exists", "The command that you've entered doesn't exist", false)
                 event.channel.sendMessage(embedBuilder.build()).queue { msg ->
                     Executors.newSingleThreadScheduledExecutor().schedule({
                         msg.delete().queue()
@@ -42,14 +42,10 @@ class CommandListener: ListenerAdapter() {
                 if (commandInformation.channelId.contains(event.channel.id)) {
                     command.execute(event, args)
                 }else {
-                    val embedBuilder = EmbedBuilder()
-                    embedBuilder.setColor(Color.RED)
-                    embedBuilder.setAuthor("Commands")
                     embedBuilder.setTitle("❌ Access Denied")
-                    embedBuilder.addField("Command does not have access",
+                    embedBuilder.addField("`${command.commandHandler.name}` does not have access to `${event.channel}`",
                         "You cannot use the command in this channel, to use this command go to: \n ${availableChannels(event.jda, commandInformation)}",
                         false)
-                    embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())
                     event.channel.sendMessage(embedBuilder.build()).queue { msg ->
                         Executors.newSingleThreadScheduledExecutor().schedule({
                             msg.delete().queue()

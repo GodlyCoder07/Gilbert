@@ -1,4 +1,4 @@
-package me.gilbert.bot.commands
+package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
@@ -10,7 +10,7 @@ import java.awt.Color
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-@CommandHandler("prefix", "changes command prefix", "prefix <prefix>", [])
+@CommandHandler("prefix", "modify command prefix", "prefix <prefix>", [])
 class PrefixCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()

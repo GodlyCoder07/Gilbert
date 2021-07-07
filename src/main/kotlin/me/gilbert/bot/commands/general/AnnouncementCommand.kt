@@ -1,4 +1,4 @@
-package me.gilbert.bot.commands
+package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-@CommandHandler("announce", "set an announcement channel for the server", "announce", [])
+@CommandHandler("announce", "announce in your server", "announce", [])
 class AnnouncementCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     companion object {
         val cache: MutableMap<String, ScheduledFuture<*>> = mutableMapOf()

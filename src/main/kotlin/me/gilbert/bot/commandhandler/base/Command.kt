@@ -10,7 +10,7 @@ abstract class Command {
 
     abstract fun execute(event: GuildMessageReceivedEvent, args: List<String>)
 
-    fun getSubCommand(name: String): SubCommand {
+    fun getSubCommand(name: String): SubCommand? {
         return subCommandsList.stream().filter { it.subCommandHandler.name == name }.findFirst().orElse(null)
     }
 }

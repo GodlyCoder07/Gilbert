@@ -2,8 +2,11 @@ package me.gilbert.bot
 
 import me.gilbert.bot.commandhandler.base.CommandListener
 import me.gilbert.bot.commandhandler.base.CommandRepository
-import me.gilbert.bot.commands.*
+import me.gilbert.bot.commands.general.*
+import me.gilbert.bot.commands.subcommands.access.Add
+import me.gilbert.bot.commands.subcommands.access.Clear
 import me.gilbert.bot.commands.subcommands.access.Get
+import me.gilbert.bot.commands.subcommands.access.Remove
 import me.gilbert.bot.database.ServerData
 import me.gilbert.bot.listener.bot.GuildJoinListener
 import me.gilbert.bot.listener.bot.GuildLeaveListener
@@ -38,8 +41,8 @@ fun main() {
         PrivateChatListener(),
         GuildJoinListener(),
         GuildLeaveListener(),
+        GuildMemberLeaveListener(),
         GuildMemberJoinListener(),
-        GuildLeaveListener(),
         TextChannelRemoveListener(),
     )
     jda.awaitReady()
@@ -47,12 +50,13 @@ fun main() {
         guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { addServerData(it) }
     commandRepository = CommandRepository()
     commandRepository.addCommand(
-        AccessCommand(mutableListOf(Get())),
+        AccessCommand(mutableListOf(Add(), Get(), Clear(), Remove())),
         AnnouncementCommand(mutableListOf()),
         HelpCommand(mutableListOf()),
         PingCommand(mutableListOf()),
         PrefixCommand(mutableListOf()),
         PurgeCommand(mutableListOf()),
         PointsCommand(mutableListOf()),
+        MemeCommand(mutableListOf())
     )
 }

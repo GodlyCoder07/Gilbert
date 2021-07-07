@@ -13,7 +13,7 @@ import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-@SubCommandHandler("", "adds channel access to a command", "add <command name>")
+@SubCommandHandler("add", "adds channel access to a command", "add <command name>")
 class Add: SubCommand() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()

@@ -1,4 +1,4 @@
-package me.gilbert.bot.commands
+package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.awt.Color
 import kotlin.math.ceil
 
-@CommandHandler("points", "your points in the server!", "points <user>", [])
+@CommandHandler("points", "interact with yours and other's points", "points <user>", [])
 class PointsCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()

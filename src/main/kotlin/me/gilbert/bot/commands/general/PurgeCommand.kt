@@ -1,4 +1,4 @@
-package me.gilbert.bot.commands
+package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
