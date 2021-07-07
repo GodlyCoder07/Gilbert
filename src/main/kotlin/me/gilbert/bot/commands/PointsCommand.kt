@@ -1,7 +1,8 @@
-package me.gilbert.bot.commands.points
+package me.gilbert.bot.commands
 
-import me.gilbert.bot.commandhandler.Command
-import me.gilbert.bot.commandhandler.CommandHandler
+import me.gilbert.bot.commandhandler.base.Command
+import me.gilbert.bot.commandhandler.base.CommandHandler
+import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.database.player.UserData
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
@@ -11,7 +12,7 @@ import java.awt.Color
 import kotlin.math.ceil
 
 @CommandHandler("points", "your points in the server!", "points <user>", [])
-class PointsCommand: Command() {
+class PointsCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setColor(Color.YELLOW)
@@ -24,7 +25,7 @@ class PointsCommand: Command() {
             embedBuilder.addField("${member.effectiveName}'s Points",
                 "${member.effectiveName} has ${ceil(data.points).toInt()} points!",
                 false)
-            event.channel.sendMessage(embedBuilder.build()).queue()
+            event.message.reply(embedBuilder.build()).queue()
             return
         }
         val data: UserData = getServerData(event.guild.id)?.getPlayerDataRepository()?.get(event.author.id) ?: return
@@ -33,6 +34,6 @@ class PointsCommand: Command() {
         embedBuilder.addField("${event.author.name}'s Points",
             "${event.author.name} has ${ceil(data.points).toInt()} points!",
             false)
-        event.channel.sendMessage(embedBuilder.build()).queue()
+        event.message.reply(embedBuilder.build()).queue()
     }
 }

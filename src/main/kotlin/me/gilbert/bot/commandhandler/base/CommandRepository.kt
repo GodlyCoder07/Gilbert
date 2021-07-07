@@ -1,4 +1,4 @@
-package me.gilbert.bot.commandhandler
+package me.gilbert.bot.commandhandler.base
 
 import me.gilbert.bot.getServerData
 import me.gilbert.bot.getServerDataList

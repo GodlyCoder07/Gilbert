@@ -4,5 +4,6 @@ class CommandInformation {
     lateinit var name: String
     lateinit var description: String
     lateinit var usage: String
+    lateinit var subCommands: Array<String>
     lateinit var channelId: Array<String>
 }

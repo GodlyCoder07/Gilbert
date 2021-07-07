@@ -1,4 +1,4 @@
-package me.gilbert.bot.commandhandler
+package me.gilbert.bot.commandhandler.base
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)

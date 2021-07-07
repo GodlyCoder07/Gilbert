@@ -1,7 +1,8 @@
-package me.gilbert.bot.commands.general
+package me.gilbert.bot.commands
 
-import me.gilbert.bot.commandhandler.Command
-import me.gilbert.bot.commandhandler.CommandHandler
+import me.gilbert.bot.commandhandler.base.Command
+import me.gilbert.bot.commandhandler.base.CommandHandler
+import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.User
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("ping", "checks your ping", "ping", [])
-class PingCommand: Command() {
+class PingCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         if (args.size == 1) {
             val user: User = event.author
@@ -41,7 +42,7 @@ class PingCommand: Command() {
                 false
             )
             embedBuilder.setFooter("Ping").setTimestamp(Date().toInstant())
-            event.channel.sendMessage(embedBuilder.build()).queue()
+            event.message.reply(embedBuilder.build()).queue()
         }else {
             val embedBuilder = EmbedBuilder()
             embedBuilder.setColor(Color.RED)
@@ -49,7 +50,7 @@ class PingCommand: Command() {
             embedBuilder.setTitle("❌ Error")
             embedBuilder.addField("Invalid Usage", "Usage: ${getServerData(event.guild.id)?.getCommandInformationRepository()?.getCommandInformationModel()?.prefix + commandHandler.usage}", false)
             embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())
-            event.channel.sendMessage(embedBuilder.build()).queue { msg ->
+            event.message.reply(embedBuilder.build()).queue { msg ->
                 Executors.newSingleThreadScheduledExecutor().schedule({
                     msg.delete().queue()
                     event.message.delete().queue()

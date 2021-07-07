@@ -1,14 +1,15 @@
-package me.gilbert.bot.commands.general
+package me.gilbert.bot.commands
 
-import me.gilbert.bot.commandhandler.Command
-import me.gilbert.bot.commandhandler.CommandHandler
+import me.gilbert.bot.commandhandler.base.Command
+import me.gilbert.bot.commandhandler.base.CommandHandler
+import me.gilbert.bot.commandhandler.sub.SubCommand
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("announce", "set an announcement channel for the server", "announce", [])
-class AnnouncementCommand: Command() {
+class AnnouncementCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     companion object {
         val cache: MutableMap<String, ScheduledFuture<*>> = mutableMapOf()
         val questionLevel: MutableMap<String, Int> = mutableMapOf()

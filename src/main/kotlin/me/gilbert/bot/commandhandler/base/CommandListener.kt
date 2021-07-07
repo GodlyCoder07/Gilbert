@@ -1,6 +1,7 @@
-package me.gilbert.bot.commandhandler
+package me.gilbert.bot.commandhandler.base
 
 import me.gilbert.bot.database.command.CommandInformation
+import me.gilbert.bot.getCommandRepository
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
@@ -20,7 +21,7 @@ class CommandListener: ListenerAdapter() {
 
         if (event.message.contentRaw.startsWith(prefix)) {
             val args: List<String> = event.message.contentRaw.split(" ")
-            val command: Command? = CommandRepository.getCommand(args[0].replace(prefix, ""))
+            val command: Command? = getCommandRepository().getCommand(args[0].replace(prefix, ""))
             if (command == null) {
                 val embedBuilder = EmbedBuilder()
                 embedBuilder.setColor(Color.RED)

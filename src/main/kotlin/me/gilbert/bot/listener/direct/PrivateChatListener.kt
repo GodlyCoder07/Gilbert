@@ -1,6 +1,6 @@
 package me.gilbert.bot.listener.direct
 
-import me.gilbert.bot.commands.general.AnnouncementCommand
+import me.gilbert.bot.commands.AnnouncementCommand
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter

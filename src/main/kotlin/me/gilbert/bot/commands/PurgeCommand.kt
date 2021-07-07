@@ -1,7 +1,8 @@
-package me.gilbert.bot.commands.general
+package me.gilbert.bot.commands
 
-import me.gilbert.bot.commandhandler.Command
-import me.gilbert.bot.commandhandler.CommandHandler
+import me.gilbert.bot.commandhandler.base.Command
+import me.gilbert.bot.commandhandler.base.CommandHandler
+import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -11,7 +12,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("purge", "delete previous messages", "purge <amount>", [])
-class PurgeCommand: Command() {
+class PurgeCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {
@@ -23,7 +24,7 @@ class PurgeCommand: Command() {
                 "Deleting $amount messages...",
                 false)
             embedBuilder.setFooter("Purge").setTimestamp(Date().toInstant())
-            event.channel.sendMessage(embedBuilder.build()).queue()
+            event.message.reply(embedBuilder.build()).queue()
             deleteMessages(event, amount + 2)
         }else {
             embedBuilder.setColor(Color.RED)
@@ -31,7 +32,7 @@ class PurgeCommand: Command() {
             embedBuilder.setTitle("❌ Error")
             embedBuilder.addField("Invalid Usage", "Usage: ${getServerData(event.guild.id)?.getCommandInformationRepository()?.getCommandInformationModel()?.prefix + commandHandler.usage}", false)
             embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())
-            event.channel.sendMessage(embedBuilder.build()).queue { msg ->
+            event.message.reply(embedBuilder.build()).queue { msg ->
                 Executors.newSingleThreadScheduledExecutor().schedule({
                     msg.delete().queue()
                     event.message.delete().queue()

@@ -1,7 +1,8 @@
-package me.gilbert.bot.commands.general
+package me.gilbert.bot.commands
 
-import me.gilbert.bot.commandhandler.Command
-import me.gilbert.bot.commandhandler.CommandHandler
+import me.gilbert.bot.commandhandler.base.Command
+import me.gilbert.bot.commandhandler.base.CommandHandler
+import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -10,7 +11,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("prefix", "changes command prefix", "prefix <prefix>", [])
-class PrefixCommand: Command() {
+class PrefixCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {
@@ -22,6 +23,7 @@ class PrefixCommand: Command() {
             embedBuilder.addField("Prefix Changed",
                 "Command prefix had successfully changed to `${prefix}`",
                 false)
+            event.message.reply(embedBuilder.build()).queue()
         }else {
             embedBuilder.setColor(Color.RED)
             embedBuilder.setTitle("❌ Error")
@@ -30,7 +32,7 @@ class PrefixCommand: Command() {
                 "Usage: ${getServerData(event.guild.id)?.getCommandInformationRepository()?.getCommandInformationModel()?.prefix + commandHandler.usage}",
                 false
             )
-            event.channel.sendMessage(embedBuilder.build()).queue { msg ->
+            event.message.reply(embedBuilder.build()).queue { msg ->
                 Executors.newSingleThreadScheduledExecutor().schedule({
                     msg.delete().queue()
                     event.message.delete().queue()

@@ -2,12 +2,13 @@ package me.gilbert.bot.database.command
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import me.gilbert.bot.commandhandler.Command
+import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.database.Data
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import java.util.*
+import java.util.stream.Collectors
 
 class CommandInformationRepository(guildId: String, path: File): Data {
     private val gson: Gson = GsonBuilder().serializeNulls().setPrettyPrinting().create()
@@ -65,6 +66,7 @@ class CommandInformationRepository(guildId: String, path: File): Data {
                 commandInformation.name = cmd.commandHandler.name
                 commandInformation.description = cmd.commandHandler.description
                 commandInformation.usage = cmd.commandHandler.usage
+                commandInformation.subCommands = cmd.subCommandsList.stream().map { it.subCommandHandler.name }.collect(Collectors.toList()).toTypedArray()
                 commandInformation.channelId = cmd.commandHandler.channelId
                 if (commandInformationModel.commands.contains(getCommandInformation(cmd))) {
                     commandInformation.channelId = getCommandInformation(cmd)?.channelId!!

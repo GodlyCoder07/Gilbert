@@ -1,9 +1,9 @@
 package me.gilbert.bot
 
-import me.gilbert.bot.commandhandler.CommandListener
-import me.gilbert.bot.commandhandler.CommandRepository
-import me.gilbert.bot.commands.general.*
-import me.gilbert.bot.commands.points.PointsCommand
+import me.gilbert.bot.commandhandler.base.CommandListener
+import me.gilbert.bot.commandhandler.base.CommandRepository
+import me.gilbert.bot.commands.*
+import me.gilbert.bot.commands.subcommands.access.Get
 import me.gilbert.bot.database.ServerData
 import me.gilbert.bot.listener.bot.GuildJoinListener
 import me.gilbert.bot.listener.bot.GuildLeaveListener
@@ -19,13 +19,11 @@ private lateinit var jda: JDA
 private val serverDataList: MutableMap<String, ServerData> = mutableMapOf()
 private lateinit var commandRepository: CommandRepository
 
-fun getServerData(guildId: String): ServerData? {
-    return serverDataList[guildId]
-}
+fun getCommandRepository(): CommandRepository { return commandRepository }
 
-fun getServerDataList(): MutableMap<String, ServerData> {
-    return serverDataList
-}
+fun getServerData(guildId: String): ServerData? { return serverDataList[guildId] }
+
+fun getServerDataList(): MutableMap<String, ServerData> { return serverDataList }
 
 fun addServerData(guildId: String) {
     if (!serverDataList.containsKey(guildId))
@@ -46,17 +44,15 @@ fun main() {
     )
     jda.awaitReady()
     jda.guildCache.applyStream { guild ->
-        guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { id ->
-        addServerData(id)
-    }
+        guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { addServerData(it) }
     commandRepository = CommandRepository()
     commandRepository.addCommand(
-        AccessCommand(),
-        AnnouncementCommand(),
-        HelpCommand(),
-        PingCommand(),
-        PrefixCommand(),
-        PurgeCommand(),
-        PointsCommand(),
+        AccessCommand(mutableListOf(Get())),
+        AnnouncementCommand(mutableListOf()),
+        HelpCommand(mutableListOf()),
+        PingCommand(mutableListOf()),
+        PrefixCommand(mutableListOf()),
+        PurgeCommand(mutableListOf()),
+        PointsCommand(mutableListOf()),
     )
 }
