@@ -14,7 +14,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("ping", "checks your ping", "ping", [])
-class PingCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class PingCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         if (args.size == 1) {
             val user: User = event.author

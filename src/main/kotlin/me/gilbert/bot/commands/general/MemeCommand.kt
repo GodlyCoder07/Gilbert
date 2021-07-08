@@ -1,6 +1,5 @@
 package me.gilbert.bot.commands.general
 
-import com.google.gson.GsonBuilder
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
 import me.gilbert.bot.commandhandler.sub.SubCommand
@@ -17,7 +16,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("meme", "view memes from online", "meme", [])
-class MemeCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class MemeCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setColor(Color.CYAN)

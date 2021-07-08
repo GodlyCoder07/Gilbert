@@ -14,7 +14,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("help", "shows list of commands", "help", [])
-class HelpCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class HelpCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setAuthor("Commands")

@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("prefix", "modify command prefix", "prefix <prefix>", [])
-class PrefixCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class PrefixCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {

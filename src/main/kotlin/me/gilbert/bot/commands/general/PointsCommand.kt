@@ -12,7 +12,7 @@ import java.awt.Color
 import kotlin.math.ceil
 
 @CommandHandler("points", "interact with yours and other's points", "points <user>", [])
-class PointsCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class PointsCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setColor(Color.YELLOW)

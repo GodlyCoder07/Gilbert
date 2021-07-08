@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("access", "modifies on which channel the command can be used", "access <add | remove | clear | get> <command name>", [])
-class AccessCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class AccessCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setFooter("Commands").setTimestamp(Date().toInstant())

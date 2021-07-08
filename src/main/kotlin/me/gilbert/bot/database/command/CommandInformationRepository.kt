@@ -66,7 +66,7 @@ class CommandInformationRepository(guildId: String, path: File): Data {
                 commandInformation.name = cmd.commandHandler.name
                 commandInformation.description = cmd.commandHandler.description
                 commandInformation.usage = cmd.commandHandler.usage
-                commandInformation.subCommands = cmd.subCommandsList.stream().map { it.subCommandHandler.name }.collect(Collectors.toList()).toTypedArray()
+                commandInformation.subCommands = Arrays.stream(cmd.subCommands).map { it.subCommandHandler.name }.collect(Collectors.toList()).toTypedArray()
                 commandInformation.channelId = cmd.commandHandler.channelId
                 if (commandInformationModel.commands.contains(getCommandInformation(cmd))) {
                     commandInformation.channelId = getCommandInformation(cmd)?.channelId!!

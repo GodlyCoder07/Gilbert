@@ -28,7 +28,7 @@ class PrivateChatListener: ListenerAdapter() {
                     content = event.message.contentRaw
                     AnnouncementCommand.cache[event.author.id]?.cancel(false)
                     AnnouncementCommand.questionLevel.remove(event.author.id)
-                    if (event.jda.getRoleById(role) == null || event.jda.getTextChannelById(channel) != null) {
+                    if (event.jda.getRoleById(role) == null || event.jda.getTextChannelById(channel) == null) {
                         embedBuilder.setColor(Color.GREEN)
                         embedBuilder.addField("❌ Announcement Failed", "Announcement has been failed to deliver because the role or the channel does not exist", true)
                         embedBuilder.setFooter("Announcement By: ${event.author.name}")

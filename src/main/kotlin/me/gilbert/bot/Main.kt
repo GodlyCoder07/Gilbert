@@ -50,13 +50,13 @@ fun main() {
         guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { addServerData(it) }
     commandRepository = CommandRepository()
     commandRepository.addCommand(
-        AccessCommand(mutableListOf(Add(), Get(), Clear(), Remove())),
-        AnnouncementCommand(mutableListOf()),
-        HelpCommand(mutableListOf()),
-        PingCommand(mutableListOf()),
-        PrefixCommand(mutableListOf()),
-        PurgeCommand(mutableListOf()),
-        PointsCommand(mutableListOf()),
-        MemeCommand(mutableListOf())
+        AccessCommand(Add(), Get(), Clear(), Remove()),
+        AnnouncementCommand(),
+        HelpCommand(),
+        PingCommand(),
+        PrefixCommand(),
+        PurgeCommand(),
+        PointsCommand(),
+        MemeCommand()
     )
 }

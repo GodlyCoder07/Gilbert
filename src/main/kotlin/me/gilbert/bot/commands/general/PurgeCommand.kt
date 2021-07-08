@@ -12,7 +12,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("purge", "delete previous messages", "purge <amount>", [])
-class PurgeCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class PurgeCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {

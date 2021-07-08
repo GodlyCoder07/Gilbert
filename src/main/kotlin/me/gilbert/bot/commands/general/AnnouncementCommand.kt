@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("announce", "announce in your server", "announce", [])
-class AnnouncementCommand(override val subCommandsList: MutableList<SubCommand>) : Command() {
+class AnnouncementCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
     companion object {
         val cache: MutableMap<String, ScheduledFuture<*>> = mutableMapOf()
         val questionLevel: MutableMap<String, Int> = mutableMapOf()
