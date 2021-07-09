@@ -3,33 +3,56 @@ package me.gilbert.bot.commands.general
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
 import me.gilbert.bot.commandhandler.sub.SubCommand
+import me.gilbert.bot.getServerData
+import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
+import java.awt.Color
+import java.util.*
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-@CommandHandler("announce", "announce in your server", "announce", [])
+@CommandHandler("announcement", "announce in your server", "announce", [])
 class AnnouncementCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
-    companion object {
-        val cache: MutableMap<String, ScheduledFuture<*>> = mutableMapOf()
-        val questionLevel: MutableMap<String, Int> = mutableMapOf()
-        val contentInformation: MutableList<String> = mutableListOf(
-            "Which channel do you want this to announce? (Channel ID)",
-            "What role to ping (Role ID)",
-            "Title of the announcement",
-            "Content of the announcement"
-        )
-    }
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
-        event.message.delete().queue()
-        if (!cache.contains(event.author.id)) {
-            questionLevel[event.author.id] = 0
-            cache[event.author.id] =
+        val embedBuilder = EmbedBuilder()
+        embedBuilder.setAuthor(
+            "Announcement",
+            null,
+            "https://image.flaticon.com/icons/png/512/630/630757.png"
+        )
+        embedBuilder.setFooter("Announcements").setTimestamp(Date().toInstant())
+        if (args.size == 3) {
+            event.message.delete().queue()
+            embedBuilder.setColor(Color.GREEN)
+            embedBuilder.addField(
+                "Successful",
+                "Announcement Channel has been created in `category: ${args[1]}, channel: ${args[2]}`",
+                false
+            )
+
+            if (event.guild.getCategoriesByName(args[1], true).isNotEmpty()) {
+                event.guild.getCategoriesByName(args[1], false)[0].createTextChannel(args[2])
+                    .queue {
+                        getServerData(event.guild.id)?.getServerInformationRepository()?.getServerInformationModel()?.announcementChannel = it.id
+                        getServerData(event.guild.id)?.getServerInformationRepository()?.save()
+                    }
+            } else {
+                event.guild.createCategory(args[1]).queue {
+                    it.createTextChannel(args[2])
+                        .queue { channel ->
+                            getServerData(event.guild.id)?.getServerInformationRepository()?.getServerInformationModel()?.announcementChannel = channel.id
+                            getServerData(event.guild.id)?.getServerInformationRepository()?.save()
+                        }
+                }
+            }
+
+            event.message.reply(embedBuilder.build()).queue {
                 Executors.newSingleThreadScheduledExecutor().schedule({
-                    cache.remove(event.author.id)
-                    event.author.openPrivateChannel().queue { dm -> dm.sendMessage("No respond for 60 seconds. Announcement request is now declined").queue() }
-                }, 60, TimeUnit.SECONDS)
-            event.author.openPrivateChannel().queue { dm -> dm.sendMessage(contentInformation[questionLevel[event.author.id]!!]).queue() }
+                    it.delete().queue()
+                }, 5, TimeUnit.SECONDS)
+            }
+        } else {
+            // usage
         }
     }
 }

@@ -2,6 +2,7 @@ package me.gilbert.bot.database
 
 import me.gilbert.bot.database.command.CommandInformationRepository
 import me.gilbert.bot.database.player.UserDataRepository
+import me.gilbert.bot.database.serverinfo.ServerInformationRepository
 import java.io.File
 
 class ServerData(id: String) {
@@ -9,6 +10,7 @@ class ServerData(id: String) {
 
     private val userDataRepository: UserDataRepository
     private val commandInformationRepository: CommandInformationRepository
+    private val serverInformationRepository: ServerInformationRepository
 
     init {
         if (!path.exists()) {
@@ -16,6 +18,7 @@ class ServerData(id: String) {
         }
         userDataRepository = UserDataRepository(id, path)
         commandInformationRepository = CommandInformationRepository(id, path)
+        serverInformationRepository = ServerInformationRepository(id, path)
     }
 
     fun getCommandInformationRepository(): CommandInformationRepository {
@@ -24,6 +27,10 @@ class ServerData(id: String) {
 
     fun getPlayerDataRepository(): UserDataRepository {
         return userDataRepository
+    }
+
+    fun getServerInformationRepository(): ServerInformationRepository {
+        return serverInformationRepository
     }
 
     fun delete() {

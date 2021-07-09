@@ -35,6 +35,7 @@ fun addServerData(guildId: String) {
 
 fun main() {
     jda = JDABuilder.createDefault(Utility.TOKEN).build()
+    jda.awaitReady()
     jda.addEventListener(
         CommandListener(),
         GuildChatListener(),
@@ -45,7 +46,6 @@ fun main() {
         GuildMemberJoinListener(),
         TextChannelRemoveListener(),
     )
-    jda.awaitReady()
     jda.guildCache.applyStream { guild ->
         guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { addServerData(it) }
     commandRepository = CommandRepository()
