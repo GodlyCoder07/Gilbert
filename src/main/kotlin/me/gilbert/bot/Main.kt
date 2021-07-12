@@ -1,12 +1,8 @@
 package me.gilbert.bot
 
-import me.gilbert.bot.commandhandler.base.CommandListener
+import me.gilbert.bot.commandhandler.CommandListener
 import me.gilbert.bot.commandhandler.base.CommandRepository
 import me.gilbert.bot.commands.general.*
-import me.gilbert.bot.commands.subcommands.access.Add
-import me.gilbert.bot.commands.subcommands.access.Clear
-import me.gilbert.bot.commands.subcommands.access.Get
-import me.gilbert.bot.commands.subcommands.access.Remove
 import me.gilbert.bot.database.ServerData
 import me.gilbert.bot.listener.bot.GuildJoinListener
 import me.gilbert.bot.listener.bot.GuildLeaveListener
@@ -33,6 +29,10 @@ fun addServerData(guildId: String) {
         serverDataList[guildId] = ServerData(guildId)
 }
 
+fun getJda(): JDA {
+    return jda
+}
+
 fun main() {
     jda = JDABuilder.createDefault(Utility.TOKEN).build()
     jda.awaitReady()
@@ -47,10 +47,11 @@ fun main() {
         TextChannelRemoveListener(),
     )
     jda.guildCache.applyStream { guild ->
-        guild.map(Guild::getId).collect(Collectors.toList()) }?.forEach { addServerData(it) }
+        guild.map(Guild::getId).collect(Collectors.toList())
+    }?.forEach { addServerData(it) }
     commandRepository = CommandRepository()
     commandRepository.addCommand(
-        AccessCommand(Add(), Get(), Clear(), Remove()),
+        AccessCommand(),
         AnnouncementCommand(),
         HelpCommand(),
         PingCommand(),

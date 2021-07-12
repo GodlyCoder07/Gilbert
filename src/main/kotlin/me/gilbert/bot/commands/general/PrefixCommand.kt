@@ -2,7 +2,6 @@ package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
-import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -11,7 +10,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @CommandHandler("prefix", "modify command prefix", "prefix <prefix>", [])
-class PrefixCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
+class PrefixCommand : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {

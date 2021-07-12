@@ -2,7 +2,6 @@ package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
-import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.database.player.UserData
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
@@ -12,7 +11,7 @@ import java.awt.Color
 import kotlin.math.ceil
 
 @CommandHandler("points", "interact with yours and other's points", "points <user>", [])
-class PointsCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
+class PointsCommand : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         embedBuilder.setColor(Color.YELLOW)
@@ -22,18 +21,22 @@ class PointsCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
             val data: UserData = getServerData(event.guild.id)?.getPlayerDataRepository()?.get(member.id) ?: return
             embedBuilder.setColor(Color.GREEN)
             embedBuilder.setTitle("Points System")
-            embedBuilder.addField("${member.effectiveName}'s Points",
+            embedBuilder.addField(
+                "${member.effectiveName}'s Points",
                 "${member.effectiveName} has ${ceil(data.points).toInt()} points!",
-                false)
+                false
+            )
             event.message.reply(embedBuilder.build()).queue()
             return
         }
         val data: UserData = getServerData(event.guild.id)?.getPlayerDataRepository()?.get(event.author.id) ?: return
         embedBuilder.setColor(Color.GREEN)
         embedBuilder.setTitle("Points System")
-        embedBuilder.addField("${event.author.name}'s Points",
+        embedBuilder.addField(
+            "${event.author.name}'s Points",
             "${event.author.name} has ${ceil(data.points).toInt()} points!",
-            false)
+            false
+        )
         event.message.reply(embedBuilder.build()).queue()
     }
 }

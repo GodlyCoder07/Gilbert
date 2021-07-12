@@ -10,7 +10,7 @@ import java.io.FileWriter
 class UserDataRepository(guildId: String, path: File): Data {
     private val gson: Gson = GsonBuilder().serializeNulls().setPrettyPrinting().create()
     private lateinit var userDataModel: UserDataModel
-    private val file = File(path, "data_command_$guildId.json")
+    private val file = File(path, "data_player_$guildId.json")
 
     init {
         createOrLoad()

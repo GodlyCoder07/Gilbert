@@ -2,7 +2,6 @@ package me.gilbert.bot.commands.general
 
 import me.gilbert.bot.commandhandler.base.Command
 import me.gilbert.bot.commandhandler.base.CommandHandler
-import me.gilbert.bot.commandhandler.sub.SubCommand
 import me.gilbert.bot.getServerData
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
@@ -11,8 +10,8 @@ import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-@CommandHandler("purge", "delete previous messages", "purge <amount>", [])
-class PurgeCommand(vararg subCommand: SubCommand) : Command(*subCommand) {
+@CommandHandler("purge", "delete previous messages", "purge <amount>", [], false, false)
+class PurgeCommand : Command() {
     override fun execute(event: GuildMessageReceivedEvent, args: List<String>) {
         val embedBuilder = EmbedBuilder()
         if (args.size == 2) {
